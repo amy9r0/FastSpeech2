@@ -7,7 +7,7 @@ class ScheduledOptim:
 
     def __init__(self, model, train_config, model_config, current_step):
 
-        self._optimizer = torch.optim.Adam(
+        self._optimizer = torch.optim.AdamW(
             model.parameters(),
             betas=train_config["optimizer"]["betas"],
             eps=train_config["optimizer"]["eps"],
