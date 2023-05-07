@@ -66,7 +66,7 @@ class ConvNorm(torch.nn.Module):
 
 class PostNet(nn.Module):
     """
-    PostNet: Five 1-d convolution with 512 channels and kernel size 5
+    PostNet: Five 1-d convolution CNN with 512 channels and kernel size 5
     """
 
     def __init__(
@@ -75,10 +75,23 @@ class PostNet(nn.Module):
         postnet_embedding_dim=512,
         postnet_kernel_size=5,
         postnet_n_convolutions=5,
+        padding=None,
+        dilation=1,
+        Network="CNN",
+        skip_channels = 5,
+        residual_blocks = 1        
     ):
 
         super(PostNet, self).__init__()
         self.convolutions = nn.ModuleList()
+        self.Network = Network
+        self.skip_channels = skip_channels
+        self.residual_blocks = residual_blocks
+
+        if padding == "None":
+            padding = None
+        elif padding is not None:
+            padding = int(padding)
 
         self.convolutions.append(
             nn.Sequential(
@@ -128,10 +141,20 @@ class PostNet(nn.Module):
 
     def forward(self, x):
         x = x.contiguous().transpose(1, 2)
-
-        for i in range(len(self.convolutions) - 1):
-            x = F.dropout(torch.tanh(self.convolutions[i](x)), 0.5, self.training)
-        x = F.dropout(self.convolutions[-1](x), 0.5, self.training)
+        
+        if self.Network == "CNN":
+            for i in range(len(self.convolutions) - 1):
+                x = F.dropout(torch.tanh(self.convolutions[i](x)), 0.5, self.training)
+            x = F.dropout(self.convolutions[-1](x), 0.5, self.training)
+            
+        if self.Network == "RNN":
+            for i in range(self.residual_blocks):
+                residual = x
+                x = F.dropout(torch.tanh(self.convolutions[0](x)), 0.5, self.training)
+                for j in range(self.skip_channels-2):
+                    x = F.dropout(torch.tanh(self.convolutions[1](x)), 0.5, self.training)
+                x = self.convolutions[-1](x)
+                x = F.dropout(torch.tanh(x + residual), 0.5, self.training)
 
         x = x.contiguous().transpose(1, 2)
         return x
