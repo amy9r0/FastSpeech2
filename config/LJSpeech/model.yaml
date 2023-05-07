@@ -35,3 +35,11 @@ max_seq_len: 1000
 vocoder:
   model: "HiFi-GAN" # support 'HiFi-GAN', 'MelGAN'
   speaker: "LJSpeech" # support  'LJSpeech', 'universal'
+
+Postnet:
+  dilation: 2
+  neural_net: RNN
+  padding: None
+  postnet_n_convolutions: 5
+  residual_blocks: 1
+  skip_channels: 5
