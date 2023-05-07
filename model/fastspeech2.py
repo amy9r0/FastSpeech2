@@ -24,7 +24,14 @@ class FastSpeech2(nn.Module):
             model_config["transformer"]["decoder_hidden"],
             preprocess_config["preprocessing"]["mel"]["n_mel_channels"],
         )
-        self.postnet = PostNet()
+        self.postnet = PostNet(
+            postnet_n_convolutions = model_config["Postnet"]["postnet_n_convolutions"],
+            padding = model_config["Postnet"]["padding"],
+            dilation = model_config["Postnet"]["dilation"],
+            Network = model_config["Postnet"]["neural_net"],
+            skip_channels = model_config["Postnet"]["skip_channels"],
+            residual_blocks = model_config["Postnet"]["residual_blocks"]
+        )
 
         self.speaker_emb = None
         if model_config["multi_speaker"]:
