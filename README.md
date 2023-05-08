@@ -1,5 +1,9 @@
 # FastSpeech 2 - PyTorch Implementation
 
+# CSCI E-104 Final Project alterations
+These alterations are for the final project for CSCI E-104: Advanced Deep Learning. I updated the requirements.txt for a compatible environment and added the option for a ResNet in the PostNet object. The original CNN implementation can still be used if you choose. There is a notebook Main_wrap.ipynb that will walk through the implementation and configurations for this model of FastSpeech2. The final output of just two models is ~6GB and can be downloaded [here](https://drive.google.com/drive/folders/175-7bjBsxdoatIkXCSN92mnB1vin9pf4?usp=sharing) for tensorboard analysis and synthesis.
+-
+
 This is a PyTorch implementation of Microsoft's text-to-speech system [**FastSpeech 2: Fast and High-Quality End-to-End Text to Speech**](https://arxiv.org/abs/2006.04558v1). 
 This project is based on [xcmyz's implementation](https://github.com/xcmyz/FastSpeech) of FastSpeech. Feel free to use/modify the code.
 
